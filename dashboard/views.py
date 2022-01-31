@@ -10,14 +10,12 @@ def main(request):
     form = EmailForm()
     if request.method =='POST':
         form = EmailForm(request.POST)
-        if form.is_valid():
+        new_form = form.save(commit=False)
+        if Email.objects.filter(email_field = new_form).exists():
+            new_form = Email(email_field=new_form, state_field=True, date_field=last_email.date_field)
+            new_form.save()
+        else:
             form.save()
-            last_email = Email.objects.latest("date_field")
-            check_email = Email.objects.filter(email_field=str(last_email))
-            if len(check_email) > 1:
-                check_email.delete()
-                form = Email(email_field=last_email.email_field, state_field=True, date_field=last_email.date_field)
-                form.save()
 
         return redirect('/')
 
@@ -27,6 +25,7 @@ def main(request):
     else:
         temp = Email.objects.filter(email_field="Записи відсутні")
         temp.delete()
+
     data = Email.objects.latest("date_field")
     context = {'data': data, 'form': form}
     return render(request, 'dashboard/main.html', context)
