@@ -1,0 +1,20 @@
+{% extends 'dashboard/index.html' %}
+{% block content %}
+<div class="card text-center">
+   <div class="card-body">
+      <div class="row">
+         <div class="col-md">
+            <div class="card card-body">
+               <table class="table">
+                  <form method="POST" action="">
+                     {% csrf_token %}
+                     {{form.as_p}}
+                     <input type="submit" value="Привітатись">
+                  </form>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
