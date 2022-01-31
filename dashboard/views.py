@@ -12,8 +12,7 @@ def main(request):
         form = EmailForm(request.POST)
         new_form = form.save(commit=False)
         if Email.objects.filter(email_field = new_form).exists():
-            new_form = Email(email_field=new_form, state_field=True, date_field=last_email.date_field)
-            new_form.save()
+            Email.objects.filter(email_field=new_form).update(state_field=True, date_field=datetime.now())
         else:
             form.save()
 
@@ -31,8 +30,7 @@ def main(request):
     return render(request, 'dashboard/main.html', context)
 
 def email_list(request):
-    emails = Email.objects.all().distinct()
-    print(type(emails))
+    emails = Email.objects.all()
 
     context = {'emails':emails}
     return render(request, 'dashboard/email_list.html', context)
