@@ -6,7 +6,7 @@ from django.dispatch import receiver
 class Email(models.Model):
     email_field = models.EmailField(max_length=254, blank=False, null=False)
     date_field = models.DateTimeField(auto_now_add=True)
-    state_field = models.BooleanField(default=False)
+    state_field = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return self.email_field
